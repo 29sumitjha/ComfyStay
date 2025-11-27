@@ -38,7 +38,13 @@ app.use(methodOverride("_method"));
 const dbUrl = process.env.ATLASDB_URL
 
 async function main() {
-  await mongoose.connect(dbUrl);
+  await mongoose.connect(dbUrl,{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    ssl: true,
+    tls: true,
+    tlsAllowInvalidCertificates: true,
+  })
 };
 main()
 .then(()=>{
@@ -51,6 +57,11 @@ main()
 //session
 const store = MongoStore.create({
     mongoUrl : dbUrl,
+    mongoOptions: {
+        ssl: true,
+        tls: true,
+        tlsAllowInvalidCertificates: true,
+    },
     crypto: {
         secret : process.env.SECRET,
     },
